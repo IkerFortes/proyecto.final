@@ -1,0 +1,112 @@
+{
+  "productos": [
+    {
+      "id": "2",
+      "nombre": "Teclado Mecánico RGB",
+      "precio": 120,
+      "stock": 5,
+      "categoria": "Periféricos",
+      "estado": "últimas unidades",
+      "conciertoid": "CONC-001"
+    },
+    {
+      "id": "3",
+      "nombre": "Monitor 4K UltraWide",
+      "precio": "45",
+      "stock": 10,
+      "categoria": "Monitores",
+      "estado": "disponible",
+      "conciertoid": "CONC-001"
+    },
+    {
+      "id": "4",
+      "nombre": "Ratón Gaming Inalámbrico",
+      "precio": 55,
+      "stock": 0,
+      "categoria": "Periféricos",
+      "estado": "sin stock",
+      "conciertoid": "CONC-001"
+    },
+    {
+      "id": "5",
+      "nombre": "Alfombrilla XL Premium",
+      "precio": 25.99,
+      "stock": 50,
+      "categoria": "Accesorios",
+      "estado": "disponible",
+      "conciertoid": "CONC-001"
+    },
+    {
+      "id": "6",
+      "nombre": "Micrófono Condensador USB",
+      "precio": 75,
+      "stock": 15,
+      "categoria": "Audio",
+      "estado": "disponible",
+      "conciertoid": "CONC-002"
+    },
+    {
+      "id": "7",
+      "nombre": "Webcam 1080p Full HD",
+      "precio": 45.5,
+      "stock": 30,
+      "categoria": "Accesorios",
+      "estado": "disponible",
+      "conciertoid": "CONC-002"
+    },
+    {
+      "id": "8",
+      "nombre": "Silla Ergonómica Gaming",
+      "precio": 189.99,
+      "stock": 3,
+      "categoria": "Muebles",
+      "estado": "últimas unidades",
+      "conciertoid": "CONC-002"
+    },
+    {
+      "id": "9",
+      "nombre": "Disco Duro Externo 2TB",
+      "precio": "65.8",
+      "stock": "25",
+      "categoria": "Almacenamiento",
+      "estado": "disponible",
+      "conciertoid": "CONC-002"
+    },
+    {
+      "id": "10",
+      "nombre": "Altavoces Inteligentes",
+      "precio": 35,
+      "stock": 12,
+      "categoria": "Audio",
+      "estado": "disponible",
+      "conciertoid": "CONC-003"
+    },
+    {
+      "id": "11",
+      "nombre": "Adaptador USB-C Hub",
+      "precio": "12",
+      "stock": 45,
+      "categoria": "Accesorios",
+      "estado": "disponible",
+      "conciertoid": "CONC-003"
+    },
+    {
+      "id": "12",
+      "nombre": "Memoria RAM 16GB DDR4",
+      "precio": 78,
+      "stock": 8,
+      "categoria": "Componentes",
+      "estado": "disponible",
+      "conciertoid": "CONC-004"
+    },
+    {
+      "id": "13",
+      "nombre": "Tarjeta Gráfica RTX 3060",
+      "precio": 329,
+      "stock": 2,
+      "categoria": "Componentes",
+      "estado": "últimas unidades",
+      "conciertoid": "CONC-004"
+    }
+  ]
+}

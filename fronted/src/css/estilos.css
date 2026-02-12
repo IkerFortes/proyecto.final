@@ -1,0 +1,435 @@
+/* Importing Google Fonts - Montserrat */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Montserrat", sans-serif;
+}
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: #f10808bb;
+}
+#root {
+  width: 100%;
+  padding: 0.6rem;
+}
+.login-container {
+  margin: 0 auto;
+  max-width: 510px;
+  width: 480px;
+  padding: 2rem 1.5rem;
+  border-radius: 0.5rem;
+  background: #fff;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+.login-container .form-title {
+  text-align: center;
+  font-size: 1.37rem;
+  font-weight: 600;
+  margin-bottom: 1.87rem;
+}
+.login-container .social-login {
+  display: flex;
+  gap: 1.31rem;
+}
+
+.login-form .input-wrapper {
+  height: 54px;
+  width: 100%;
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+.login-form .input-field {
+  width: 100%;
+  height: 100%;
+  outline: none;
+  font-size: 1.06rem;
+  border-radius: 0.31rem;
+  border: 1px solid #e91414cb;
+  padding: 0px 1.25rem 0 3.12rem;
+  transition: 0.2s ease;
+}
+.login-form .input-field:focus {
+  border-color: #f80000;
+}
+.login-form .input-field::placeholder {
+  color: #e92626;
+}
+.login-form .input-wrapper span {
+  position: absolute;
+  top: 50%;
+  height: 100%;
+  display: flex;
+  color: #ee3838;
+  align-items: center;
+  transform: translateY(-50%);
+  transition: 0.2s ease;
+}
+.login-form .input-wrapper span:not(.eye-icon) {
+  left: 0.93rem;
+  pointer-events: none;
+}
+.login-form .input-field:focus ~ span:not(.eye-icon) {
+  color: #e44141;
+}
+.login-form .input-wrapper span.eye-icon {
+  display: none;
+  right: 0.93rem;
+  color: #e8d87d;
+  cursor: pointer;
+  font-size: 1.25rem;
+}
+.login-form .input-wrapper .input-field:valid ~ .eye-icon {
+  display: flex;
+}
+.login-form .forgot-password-link {
+  display: block;
+  width:fit-content;
+  margin-top: -0.44rem;
+}
+.login-form .login-button {
+  border: none;
+  outline: none;
+  width: 100%;
+  height: 54px;
+  color: #fff;
+  font-size: 1.125rem;
+  font-weight: 500;
+  cursor: pointer;
+  margin-top: 2.19rem;
+  border-radius: 0.31rem;
+  background: #f03232;
+  transition: 0.3s ease;
+}
+.login-form .login-button:hover {
+  background: #fa0000;
+}
+.login-container .signup-prompt {
+  text-align: center;
+  font-size: 1.06rem;
+  font-weight: 500;
+  margin: 1.75rem 0 0.31rem;
+}
+
+/* Importing Google Fonts - Montserrat */
+@import url('https://fonts.googleapis.com');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Montserrat", sans-serif;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  background: #f10808bb;
+  padding-top: 80px; /* Espacio para la navbar fixed */
+}
+
+#root {
+  width: 100%;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* =========================================
+   NAVBAR (Rediseñada)
+   ========================================= */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #ffffff;
+  padding: 0.8rem 10%;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+.nav-logo {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #f03232;
+  text-transform: uppercase;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 10px;
+}
+
+.nav-item {
+  color: #333;
+  text-decoration: none;
+  font-weight: 600;
+  padding: 10px 20px;
+  border-radius: 0.5rem;
+  transition: 0.3s;
+}
+
+.nav-item.active {
+  background: #f03232;
+  color: white;
+}
+
+/* =========================================
+   CONTENEDOR DE PRODUCTOS (Centrado y Grande)
+   ========================================= */
+.product-grid {
+  display: grid;
+  /* Tarjetas más grandes: mínimo 300px */
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+  width: 100%;
+  max-width: 1200px; /* Limita el ancho para centrar el contenido */
+  padding: 40px 20px;
+  justify-items: center; /* Centra las tarjetas si sobran espacios */
+}
+
+/* TARJETA REDISEÑADA */
+.card-compact {
+  background: #ffffff;
+  width: 100%;
+  max-width: 350px; /* Tamaño máximo de tarjeta */
+  border-radius: 15px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-bottom: 6px solid #f03232;
+}
+
+.card-compact:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+}
+
+.p-name {
+  padding: 20px 20px 10px;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #222;
+}
+
+.p-details {
+  padding: 0 20px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+}
+
+.p-price {
+  font-weight: 800;
+  color: #f03232;
+  font-size: 1.5rem;
+}
+
+.p-stock {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #666;
+  background: #f8f9fa;
+  padding: 6px 12px;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+}
+
+/* =========================================
+   FORMULARIO (Centrado y Ajustado)
+   ========================================= */
+.form-wrapper {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding: 2rem;
+}
+
+.form-container {
+  background: #ffffff;
+  padding: 2.5rem;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  max-width: 600px; 
+  width: 100%;
+  border-top: 8px solid #f03232;
+}
+
+.form-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.form-group input {
+  padding: 14px;
+  border: 1px solid #e91414;
+  border-radius: 8px;
+}
+
+.add-btn {
+  background-color: #f03232;
+  color: white;
+  border: none;
+  padding: 16px;
+  width: 100%;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 1rem;
+}
+
+
+/* Contenedor de botones en la tarjeta */
+.p-actions {
+  display: flex;
+  gap: 10px;
+  padding: 15px 20px 20px;
+  margin-top: 10px;
+}
+
+/* Estilo base para los botones de la tarjeta */
+.p-actions a {
+  flex: 1;
+  text-align: center;
+  text-decoration: none;
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 10px;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  display: inline-block;
+}
+
+/* Botón Editar - Rojo sólido (estilo principal) */
+.btn-edit {
+  background-color: #f03232;
+  color: white;
+  border: 1px solid #f03232;
+}
+
+.btn-edit:hover {
+  background-color: #d12828;
+  box-shadow: 0 4px 8px rgba(240, 50, 50, 0.2);
+}
+
+/* Botón Borrar - Estilo Outline (menos agresivo) */
+.btn-delete {
+  background-color: transparent;
+  color: #f03232;
+  border: 1px solid #f03232;
+}
+
+.btn-delete:hover {
+  background-color: #f03232;
+  color: white;
+}
+
+
+
+/* =========================================
+   ESTILOS ESPECÍFICOS PARA PRODUCTOS CREAR
+   ========================================= */
+
+.form-container .form-title {
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 2rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.product-form .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.product-form label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #444;
+  margin-left: 2px;
+}
+
+.product-form input, 
+.product-form select {
+  width: 100%;
+  padding: 12px 15px;
+  border: 2px solid #eee; /* Borde suave por defecto */
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: inherit;
+  transition: all 0.3s ease;
+  outline: none;
+  background-color: #f9f9f9;
+}
+
+/* Efecto al hacer clic en los inputs */
+.product-form input:focus, 
+.product-form select:focus {
+  border-color: #f03232;
+  background-color: #fff;
+  box-shadow: 0 0 8px rgba(240, 50, 50, 0.1);
+}
+
+/* Estilo especial para el select */
+.product-form select {
+  cursor: pointer;
+  appearance: none; /* Quita el estilo nativo */
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org' viewBox='0 0 24 24' fill='none' stroke='%23f03232' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 1em;
+}
+
+/* Botón de envío con animación */
+.add-btn {
+  background-color: #f03232;
+  color: white;
+  border: none;
+  padding: 16px;
+  width: 100%;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  cursor: pointer;
+  margin-top: 1.5rem;
+  transition: transform 0.2s active, background 0.3s ease;
+  box-shadow: 0 4px 15px rgba(240, 50, 50, 0.3);
+}
+
+.add-btn:hover {
+  background-color: #d12828;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(240, 50, 50, 0.4);
+}
+
+.add-btn:active {
+  transform: translateY(0);
+}
+
+/* Responsivo para móviles */
+@media (max-width: 480px) {
+  .form-container {
+    padding: 1.5rem;
+  }
+}
