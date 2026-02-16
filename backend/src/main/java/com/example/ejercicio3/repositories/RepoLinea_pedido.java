@@ -8,5 +8,7 @@ import com.example.ejercicio3.entities.Pedido;
 
 @Repository
 public interface RepoLinea_pedido extends JpaRepository<Linea_pedido, Long>{
-    List<Linea_pedido>  findByPedido(Pedido pedido);
+
+    List<Linea_pedido> findByPedido(Pedido pedido);
+
 }

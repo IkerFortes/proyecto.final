@@ -1,12 +1,14 @@
 package com.example.ejercicio3.repositories;
 
-
+import com.example.ejercicio3.entities.Producto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.example.ejercicio3.entities.Producto;
+import java.util.List;
 
 @Repository
 public interface RepoProducto extends JpaRepository<Producto,Long>{
-    // Producto find(Long concId);
+
+    List<Producto> findByConciertoId(Long conciertoId);
+
 }

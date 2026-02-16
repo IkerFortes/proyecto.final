@@ -1,48 +1,46 @@
 package com.example.ejercicio3.services;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.example.ejercicio3.entities.Producto;
 import com.example.ejercicio3.repositories.RepoProducto;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import java.util.List;
 
 @Service
 public class SProducto {
-    
-    @Autowired RepoProducto repoProducto;
+
+    @Autowired
+    RepoProducto repoProducto;
 
     public List<Producto> todosProductos(){
-        return  repoProducto.findAll();
+        return repoProducto.findAll();
     }
 
-    // public Producto productoPorId(Long prodId){
-    //     return repoProducto.find(prodId);
-    // }
+    public Producto productoPorId(Long id){
+        return repoProducto.findById(id).orElse(null);
+    }
 
     public Producto insertarProducto(Producto nuevo){
-        // if(repoProducto.existsById(nuevo.getId())){
-        //     return null;
-        // }
         return repoProducto.save(nuevo);
     }
 
     public Producto actualizarProducto(Producto upProducto, Long id){
-        if(!repoProducto.existsById(id)){
-            return null;
-        }
+        if(!repoProducto.existsById(id)) return null;
+
         Producto prodBD = repoProducto.findById(id).get();
-        prodBD.setConciertoId(upProducto.getConciertoId());
-        repoProducto.save(prodBD);
-        return prodBD;
+        prodBD.setNombre(upProducto.getNombre());
+        prodBD.setPrecio(upProducto.getPrecio());
+        prodBD.setStock(upProducto.getStock());
+        prodBD.setConcierto(upProducto.getConcierto()); 
+        return repoProducto.save(prodBD);
     }
 
     public boolean borrarProducto(Long id){
-        if(!repoProducto.existsById(id)){
-            return false;
-        }
-        repoProducto.delete(repoProducto.findById(id).get());
+        if(!repoProducto.existsById(id)) return false;
+
+        repoProducto.deleteById(id);
         return true;
     }
 }
+
+

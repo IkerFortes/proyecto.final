@@ -2,12 +2,18 @@ package com.example.ejercicio3.entities;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
+@Getter
+@Setter
 public class Usuario {
+
     @Id
-    public Long id;
-    public String nombre;
-    public String email;
-    public String rol;
+    private Long id;
+
+    private String nombre;
+    private String email;
+    private String rol; 
 }
