@@ -13,11 +13,9 @@ public class Producto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
 
-    public String nombre;
-    public Double precio;
-    public int stock;
-
-    @ManyToOne
-    @JoinColumn(name="conciertoId")
-    public Concierto concierto;   
+    
+    private String nombre;
+    private Double precio;
+    private int stock;
+    private Long conciertoId;   
 }

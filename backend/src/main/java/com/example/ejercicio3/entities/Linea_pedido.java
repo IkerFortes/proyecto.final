@@ -11,15 +11,14 @@ public class Linea_pedido {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long id;
+    private Long id;
 
-    @ManyToOne
-    @JoinColumn(name="pedidoId")
-    public Pedido pedido;
+    private int cantidad;
 
-    @ManyToOne
-    @JoinColumn(name="productoId")
-    public Producto producto;
+    private Long productoId;
 
-    public int cantidad;
+    // Relación con Pedido
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "pedido_id")
+    private Pedido pedido;
 }

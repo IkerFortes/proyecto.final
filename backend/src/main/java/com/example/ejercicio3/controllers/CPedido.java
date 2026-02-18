@@ -1,40 +1,40 @@
 package com.example.ejercicio3.controllers;
+
+import com.example.ejercicio3.apimock.ApiMockClient;
 import com.example.ejercicio3.entities.Pedido;
-import com.example.ejercicio3.repositories.RepoUsuario;
 import com.example.ejercicio3.services.SPedido;
-
-import java.util.List;
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/pedidos")
 public class CPedido {
 
-    @Autowired SPedido servicio;
-    @Autowired RepoUsuario repoUsuario;
+    @Autowired
+    private SPedido servicio;
+
+    @Autowired
+    private ApiMockClient apiMockClient;
 
     @GetMapping("/usuario/{id}")
     public ResponseEntity<List<Pedido>> pedidosUsuario(@PathVariable Long id){
+        if(!isCliente(id))
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+
         return ResponseEntity.ok(servicio.pedidosUsuario(id));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Pedido> buscar(@PathVariable Long id){
-        return servicio.buscarPedido(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        Optional<Pedido> pedidoOpt = servicio.buscarPedido(id);
+        if(pedidoOpt.isEmpty()) return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(pedidoOpt.get());
     }
 
     @PostMapping
@@ -43,9 +43,31 @@ public class CPedido {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 
         Pedido p = servicio.crearPedido(usuarioId);
-        if(p == null) return ResponseEntity.badRequest().build();
+        if(p == null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 
         return ResponseEntity.status(HttpStatus.CREATED).body(p);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Pedido> actualizar(
+            @PathVariable Long id,
+            @RequestParam Long usuarioId,
+            @RequestParam(required = false) LocalDateTime nuevaFecha) {
+
+        if(!isCliente(usuarioId))
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+
+        Optional<Pedido> pedidoOpt = servicio.buscarPedido(id);
+        if(pedidoOpt.isEmpty()) return ResponseEntity.notFound().build();
+
+        Pedido pedido = pedidoOpt.get();
+        if(!pedido.getUsuarioId().equals(usuarioId))
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+
+        if(nuevaFecha != null) pedido.setFecha(nuevaFecha);
+
+        Pedido actualizado = servicio.actualizarPedido(pedido);
+        return ResponseEntity.ok(actualizado);
     }
 
     @DeleteMapping("/{id}")
@@ -55,7 +77,7 @@ public class CPedido {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 
         Optional<Pedido> pedidoOpt = servicio.buscarPedido(id);
-        if(pedidoOpt.isEmpty() || !pedidoOpt.get().getUsuario().getId().equals(usuarioId))
+        if(pedidoOpt.isEmpty() || !pedidoOpt.get().getUsuarioId().equals(usuarioId))
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 
         if(!servicio.borrarPedido(id))
@@ -65,8 +87,7 @@ public class CPedido {
     }
 
     private boolean isCliente(Long usuarioId){
-        return repoUsuario.findById(usuarioId)
-                .map(u -> "CLIENTE".equalsIgnoreCase(u.getRol()))
-                .orElse(false);
+        var usuario = apiMockClient.getUsuario(usuarioId);
+        return usuario != null && "CLIENTE".equalsIgnoreCase(usuario.rol());
     }
 }

@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
@@ -15,9 +16,9 @@ public class Pedido {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
 
-    @ManyToOne
-    @JoinColumn(name="usuarioId")
-    public Usuario usuario;
-
-    public LocalDateTime fecha;
+    private Long usuarioId;
+    private LocalDateTime fecha;
+    // Relación con Linea_pedido
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Linea_pedido> lineas;
 }

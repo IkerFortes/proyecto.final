@@ -1,104 +1,112 @@
 package com.example.ejercicio3.services;
 
-import java.util.List;
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
+import com.example.ejercicio3.apimock.ApiMockClient;
 import com.example.ejercicio3.entities.Linea_pedido;
 import com.example.ejercicio3.entities.Pedido;
 import com.example.ejercicio3.entities.Producto;
-import com.example.ejercicio3.entities.Entrada;
+import com.example.ejercicio3.dtos.ConciertoDTO;
+import com.example.ejercicio3.dtos.EntradaDTO;
 import com.example.ejercicio3.repositories.RepoLinea_pedido;
 import com.example.ejercicio3.repositories.RepoPedido;
 import com.example.ejercicio3.repositories.RepoProducto;
-import com.example.ejercicio3.repositories.RepoEntrada;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class SLinea_pedido {
 
     @Autowired
-    RepoLinea_pedido repoLinea_pedido;
+    private RepoLinea_pedido repoLinea_pedido;
 
     @Autowired
-    RepoPedido repoPedido;
+    private RepoPedido repoPedido;
 
     @Autowired
-    RepoProducto repoProducto;
+    private RepoProducto repoProducto;
 
     @Autowired
-    RepoEntrada repoEntrada;
+    private ApiMockClient apiMockClient;
 
-    public List<Linea_pedido> todasLineasPedidos(Long id){
-        Optional<Pedido> pedido = repoPedido.findById(id);
-        return pedido.map(p -> repoLinea_pedido.findByPedido(p)).orElse(List.of());
+    public List<Linea_pedido> todasLineasPedidos(Long pedidoId){
+        return repoPedido.findById(pedidoId)
+                .map(repoLinea_pedido::findByPedido)
+                .orElse(List.of());
     }
 
-    public Linea_pedido agregarLinea(Long pedidoId, Long productoId, int cantidad) {
-        Optional<Pedido> pedidoOpt = repoPedido.findById(pedidoId);
-        Optional<Producto> productoOpt = repoProducto.findById(productoId);
+    public Linea_pedido agregarLinea(Long pedidoId, Long productoId, int cantidad, Long usuarioId){
+        if(cantidad <= 0) return null;
 
+        var pedidoOpt = repoPedido.findById(pedidoId);
+        var productoOpt = repoProducto.findById(productoId);
         if(pedidoOpt.isEmpty() || productoOpt.isEmpty()) return null;
 
-        Pedido pedido = pedidoOpt.get();
-        Producto prod = productoOpt.get();
+        var pedido = pedidoOpt.get();
+        var producto = productoOpt.get();
 
+        if(!pedido.getUsuarioId().equals(usuarioId)) return null;
+        if(cantidad > producto.getStock()) return null;
 
-        if(cantidad > prod.getStock()) return null;
+        ConciertoDTO concierto = apiMockClient.getConcierto(producto.getConciertoId());
+        if(concierto == null || "CANCELADO".equalsIgnoreCase(concierto.estado())
+           || "FINALIZADO".equalsIgnoreCase(concierto.estado())) return null;
 
-        if("CANCELADO".equalsIgnoreCase(prod.getConcierto().getEstado())) return null;
+        List<EntradaDTO> entradas = apiMockClient.entradasUsuarioConcierto(usuarioId, producto.getConciertoId());
+        if(entradas.isEmpty()) return null;
 
-        List<Entrada> entradas = repoEntrada.findByUsuarioIdAndConciertoId(
-                pedido.getUsuario().getId(), prod.getConcierto().getId()
-        );
-        if(entradas.isEmpty()) 
-            return null;
+        producto.setStock(producto.getStock() - cantidad);
+        repoProducto.save(producto);
 
         Linea_pedido linea = new Linea_pedido();
         linea.setPedido(pedido);
-        linea.setProducto(prod);
+        linea.setProductoId(productoId);
         linea.setCantidad(cantidad);
-
-        prod.setStock(prod.getStock() - cantidad);
-        repoProducto.save(prod);
 
         return repoLinea_pedido.save(linea);
     }
 
-    public Linea_pedido modificarLinea(Long lineaId, int nuevaCantidad, Long usuarioId) {
-        Optional<Linea_pedido> lineaOpt = repoLinea_pedido.findById(lineaId);
+    public Linea_pedido modificarLinea(Long lineaId, int nuevaCantidad, Long usuarioId){
+        if(nuevaCantidad <= 0) return null;
+
+        var lineaOpt = repoLinea_pedido.findById(lineaId);
         if(lineaOpt.isEmpty()) return null;
 
         Linea_pedido linea = lineaOpt.get();
-        if(!linea.getPedido().getUsuario().getId().equals(usuarioId)) 
-            return null;
+        if(!linea.getPedido().getUsuarioId().equals(usuarioId)) return null;
 
-        Producto prod = linea.getProducto();
+        Producto producto = repoProducto.findById(linea.getProductoId()).orElse(null);
+        if(producto == null) return null;
 
-        int stockDisponible = prod.getStock() + linea.getCantidad();
-        if(nuevaCantidad > stockDisponible) 
-            return null;
+        int stockDisponible = producto.getStock() + linea.getCantidad();
+        if(nuevaCantidad > stockDisponible) return null;
 
-        prod.setStock(stockDisponible - nuevaCantidad);
-        repoProducto.save(prod);
+        ConciertoDTO concierto = apiMockClient.getConcierto(producto.getConciertoId());
+        if(concierto == null || "CANCELADO".equalsIgnoreCase(concierto.estado())
+           || "FINALIZADO".equalsIgnoreCase(concierto.estado())) return null;
+
+        List<EntradaDTO> entradas = apiMockClient.entradasUsuarioConcierto(usuarioId, producto.getConciertoId());
+        if(entradas.isEmpty()) return null;
+
+        producto.setStock(stockDisponible - nuevaCantidad);
+        repoProducto.save(producto);
 
         linea.setCantidad(nuevaCantidad);
         return repoLinea_pedido.save(linea);
     }
 
     public boolean eliminarLinea(Long lineaId, Long usuarioId){
-        Optional<Linea_pedido> lineaOpt = repoLinea_pedido.findById(lineaId);
-        if(lineaOpt.isEmpty()) 
-            return false;
+        var lineaOpt = repoLinea_pedido.findById(lineaId);
+        if(lineaOpt.isEmpty()) return false;
 
         Linea_pedido linea = lineaOpt.get();
-        if(!linea.getPedido().getUsuario().getId().equals(usuarioId)) 
-            return false;
+        if(!linea.getPedido().getUsuarioId().equals(usuarioId)) return false;
 
-        Producto prod = linea.getProducto();
-        prod.setStock(prod.getStock() + linea.getCantidad());
-        repoProducto.save(prod);
+        Producto producto = repoProducto.findById(linea.getProductoId()).orElse(null);
+        if(producto != null){
+            producto.setStock(producto.getStock() + linea.getCantidad());
+            repoProducto.save(producto);
+        }
 
         repoLinea_pedido.delete(linea);
         return true;
